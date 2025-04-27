@@ -3,7 +3,7 @@ import { useNote } from "../../Context/contex";
 import { Link } from "react-router-dom";
 
 function NoteList() {
-    const { notes } = useNote();
+    const { notes, deleteNote } = useNote();  // get deleteNote function too
 
     if (notes.length === 0) {
         return (
@@ -19,14 +19,23 @@ function NoteList() {
             <h1 className="text-3xl font-bold mb-8 text-center">Your Notes</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {notes.map((note) => (
-                    <Link 
-                        to={`/notes/${note.id}`} 
+                    <div 
                         key={note.id} 
-                        className="block p-6 rounded-lg shadow-md bg-white hover:bg-indigo-50 transition duration-300"
+                        className="block p-6 rounded-lg shadow-md bg-white hover:bg-indigo-50 transition duration-300 relative"
                     >
-                        <h2 className="text-xl font-semibold text-indigo-600 mb-2">{note.title}</h2>
-                        <p className="text-gray-500 line-clamp-2">{note.content}</p>
-                    </Link>
+                        <Link to={`/notes/${note.id}`}>
+                            <h2 className="text-xl font-semibold text-indigo-600 mb-2">{note.title}</h2>
+                            <p className="text-gray-500 line-clamp-2">{note.content}</p>
+                        </Link>
+
+                        {/* Delete Button */}
+                        <button
+                            onClick={() => deleteNote(note.id)}
+                            className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                        >
+                            ✖
+                        </button>
+                    </div>
                 ))}
             </div>
         </div>

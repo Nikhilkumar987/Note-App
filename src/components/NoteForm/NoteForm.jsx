@@ -36,7 +36,6 @@ function NoteForm() {
           Save Note
         </button>
       </div>
-
     </div>
   );
 }

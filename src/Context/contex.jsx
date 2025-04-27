@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createContext,useContext } from "react";
 
 
@@ -9,6 +9,26 @@ export const NoteContext = createContext()
     const [title ,setTitle] = useState('');
     const [notes,setNote] = useState([]);
     const [content,setContent] = useState('') 
+
+
+    useEffect(()=>
+    {
+        const storednotes = JSON.parse(localStorage.getItem("notes"));
+        if(storednotes)
+        {
+            setNote(storednotes);
+        }
+    },[])
+
+    useEffect(()=>
+    {
+        localStorage.setItem("notes",JSON.stringify(notes))
+    },[notes])
+
+
+    function deleteNote(id) {
+        setNote((prevNotes) => prevNotes.filter((note) => note.id !== id));
+      }
 
     function addNote()
     {
@@ -23,7 +43,7 @@ export const NoteContext = createContext()
     }
 
     return(
-        <NoteContext.Provider value={{title,setTitle,content,setContent,notes,addNote}}>
+        <NoteContext.Provider value={{title,setTitle,content,setContent,notes,addNote,deleteNote}}>
             {children}
         </NoteContext.Provider>
     )
